@@ -17,6 +17,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.HashSet;
@@ -45,12 +47,27 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Erhalte den Player aus dem Intent
-        player = (Player) getIntent().getSerializableExtra("player");
-
-        // Initialisiere den SensorManager
+        // Initialisiere den SensorManager und den Beschleunigungssensor
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        if (sensorManager != null) {
+            accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        }
+
+        // Prüfe, ob der Sensor verfügbar ist
+        if (sensorManager == null || accelerometer == null) {
+            Toast.makeText(this, "Bewegungssensor nicht verfügbar", Toast.LENGTH_LONG).show();
+            finish(); // Schließe die Activity, wenn der Sensor essenziell ist
+            return;
+        }
+
+        // Lade den Spieler
+        player = getIntent().getParcelableExtra("player");
+
+        if (player == null) {
+            Toast.makeText(this, "Fehler: Spieler nicht gefunden", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
 
         // Setze das Layout
         setupLayout();
@@ -61,6 +78,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         // Starte den Timer
         startTimer();
     }
+
 
     private void setupLayout() {
         // Erstelle das Layout-Frame für das Spiel und die Knöpfe
@@ -292,7 +310,11 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onResume() {
         super.onResume();
-        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
+        if (sensorManager != null && accelerometer != null) {
+            sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
+        } else {
+            Toast.makeText(this, "Bewegungssensor nicht verfügbar", Toast.LENGTH_LONG).show();
+        }
         if (isPaused) {
             startTimer(); // Timer fortsetzen
             isPaused = false;
@@ -302,10 +324,13 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onPause() {
         super.onPause();
-        sensorManager.unregisterListener(this);
+        if (sensorManager != null) {
+            sensorManager.unregisterListener(this);
+        }
         countDownTimer.cancel(); // Timer anhalten
         isPaused = true;
     }
+
 
     @Override
     public void onSensorChanged(SensorEvent event) {

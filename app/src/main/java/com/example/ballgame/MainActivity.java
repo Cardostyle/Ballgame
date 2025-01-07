@@ -1,4 +1,3 @@
-// MainActivity.java
 package com.example.ballgame;
 
 import android.content.Context;
@@ -33,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         EditText playerNameInput = findViewById(R.id.player_name_input);
         Button startButton = findViewById(R.id.start_button);
         Button clearButton = findViewById(R.id.clear_button);
+        Button bluetoothButton = findViewById(R.id.bluetooth_button);
         highscoreList = findViewById(R.id.highscore_list); // ListView für die Highscore-Liste
 
         // Lade gespeicherte Spieler
@@ -69,6 +69,16 @@ public class MainActivity extends AppCompatActivity {
                 displayHighscores(); // Aktualisiere die Anzeige
             }
         });
+
+        bluetoothButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, BluetoothActivity.class);
+                intent.putParcelableArrayListExtra("players", new ArrayList<>(players)); // Korrekte Übergabe
+                startActivity(intent);
+            }
+        });
+
     }
 
     private Player findOrCreatePlayer(String playerName) {
@@ -98,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Logge die geladenen Spieler
-        System.out.println( "Geladene Spieler: " + playerList.toString());
+        System.out.println("Geladene Spieler: " + playerList.toString());
 
         return playerList;
     }
@@ -113,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Logge die Daten, die gespeichert werden
-        System.out.println( "Speichere Spieler: " + playerSet.toString());
+        System.out.println("Speichere Spieler: " + playerSet.toString());
 
         editor.putStringSet(PLAYERS_KEY, playerSet);
         editor.apply();

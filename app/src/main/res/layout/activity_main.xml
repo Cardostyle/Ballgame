@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -33,18 +33,28 @@
         android:id="@+id/highscore_list"
         android:layout_width="match_parent"
         android:layout_height="260dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="0dp"
         android:layout_marginTop="20dp" />
 
-    <Button
-        android:id="@+id/clear_button"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Spielerliste Löschen"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="16dp"
-        android:background="@android:drawable/btn_default" />
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/bluetooth_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bluetooth"
+            android:layout_margin="16dp"
+            android:background="@android:drawable/btn_default" />
+
+        <Button
+            android:id="@+id/clear_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Spielerliste Löschen"
+            android:layout_margin="16dp"
+            android:background="@android:drawable/btn_default" />
+    </LinearLayout>
+</LinearLayout>

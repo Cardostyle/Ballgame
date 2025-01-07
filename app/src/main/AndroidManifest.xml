@@ -1,6 +1,13 @@
-<!-- AndroidManifest.xml -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.ballgame">
+
+    <!-- Berechtigungen -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" android:required="false" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+
 
     <application
         android:allowBackup="true"
@@ -20,7 +27,9 @@
         </activity>
 
         <!-- Spielbildschirm -->
-        <activity android:name=".GameActivity" />
+        <activity android:name=".GameActivity" android:exported="true" />
+        <!-- Bluetooth Übertragung -->
+        <activity android:name=".BluetoothActivity" android:exported="true" />
 
     </application>
 </manifest>
